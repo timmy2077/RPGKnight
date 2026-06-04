@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Enemy
+  - Confiner
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Enemy
+  - Player
+  - Arrow
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: sea
+    uniqueID: 454232993
+    locked: 0
+  - name: grass
+    uniqueID: 2159746587
+    locked: 0
+  - name: interactable
+    uniqueID: 114794885
+    locked: 0
+  - name: item
+    uniqueID: 1757303085
+    locked: 0
+  - name: Game
+    uniqueID: 2217991715
+    locked: 0

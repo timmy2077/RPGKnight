@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fe8d7c4daf285d47815750bdffc32d2, type: 3}
+  m_Name: Greeing with Bob
+  m_EditorClassIdentifier: 
+  lines:
+  - speaker: {fileID: 11400000, guid: 5d053d03c1b790a469a408c5de24e3fa, type: 2}
+    text: Hello,Night Runner!
+  - speaker: {fileID: 11400000, guid: 5d053d03c1b790a469a408c5de24e3fa, type: 2}
+    text: 'I heard you just released a new devlog for Willard,
+
+      talking about
+      animation!'
+  - speaker: {fileID: 11400000, guid: 4a0796377ce5890489a862356efc25b1, type: 2}
+    text: Sure did! You should check it out, Bob!
+  options:
+  - optionText: Tell me more
+    nextDialogue: {fileID: 11400000, guid: 6cf71c63fbf70904cbc395f6ff9a5146, type: 2}
+    offerQuest: {fileID: 0}
+  - optionText: No interested
+    nextDialogue: {fileID: 11400000, guid: d195f45c88d66484b9536d82ea3f760b, type: 2}
+    offerQuest: {fileID: 0}
+  offerQuestOnEnd: {fileID: 0}
+  requiredCompletedQuests: []
+  turnInQuestOnEnd: {fileID: 0}
+  requiredNPCs:
+  - {fileID: 11400000, guid: dd00ff18c3844254f985fc89f8694829, type: 2}
+  - {fileID: 11400000, guid: 77e0ca06870722a44a9399b75bcb45ca, type: 2}
+  requiredLocations: []
+  requiredItems: []
+  removeAfterPlay: 0
+  removeTheseOnPlay: []
