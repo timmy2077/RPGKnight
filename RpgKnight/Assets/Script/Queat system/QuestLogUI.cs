@@ -15,7 +15,7 @@ public class QuestLogUI : MonoBehaviour
     [SerializeField] private QuestSO noAvailableQuestSO;
     [SerializeField] private QuestLogSlot[] questSlots;
     [SerializeField] private CanvasGroup acceptCanvasGroup;
-    [SerializeField] private CanvasGroup declineCanvasGrtoup;
+    [SerializeField] private CanvasGroup declineCanvasGroup;
     [SerializeField] private CanvasGroup completeCanvasGroup;
 
 
@@ -35,17 +35,24 @@ public class QuestLogUI : MonoBehaviour
 
     public void ShowQuestoffer(QuestSO incomingQuestSO)
     {
-        if(questManager.IsQuestAccepted(incomingQuestSO) || questManager.GetCompleteQuest(incomingQuestSO))
+        if(questManager.GetCompleteQuest(incomingQuestSO))
         {
         questSO = noAvailableQuestSO;
         SetCanvasState(acceptCanvasGroup, false);
-        SetCanvasState(declineCanvasGrtoup, true);
+        SetCanvasState(declineCanvasGroup, true);
+        SetCanvasState(completeCanvasGroup, false);
+        }
+        else if(questManager.IsQuestAccepted(incomingQuestSO))
+        {
+        questSO = incomingQuestSO;
+        SetCanvasState(acceptCanvasGroup, false);
+        SetCanvasState(declineCanvasGroup, true);
         SetCanvasState(completeCanvasGroup, false);
         }
         else{
         questSO = incomingQuestSO;
         SetCanvasState(acceptCanvasGroup, true);
-        SetCanvasState(declineCanvasGrtoup, true);
+        SetCanvasState(declineCanvasGroup, true);
         SetCanvasState(completeCanvasGroup, false);
         }
         HandleQuestClicked(questSO);
@@ -59,8 +66,8 @@ public class QuestLogUI : MonoBehaviour
         questSO = incomingQuestSO;
         HandleQuestClicked(questSO);
         SetCanvasState(acceptCanvasGroup, false);
-        // SetCanvasState(declineCanvasGrtoup, true);
-        SetCanvasState(declineCanvasGrtoup, false);
+        // SetCanvasState(declineCanvasGroup, true);
+        SetCanvasState(declineCanvasGroup, false);
         SetCanvasState(completeCanvasGroup, true);
         
         SetCanvasState(questCanvas, true);
@@ -73,7 +80,7 @@ public class QuestLogUI : MonoBehaviour
         QuestEvents.OnQuestAccepted?.Invoke(questSO);
         questManager.AcceptQuest(questSO);
         SetCanvasState(acceptCanvasGroup, false);
-        SetCanvasState(declineCanvasGrtoup, true);
+        SetCanvasState(declineCanvasGroup, true);
         SetCanvasState(completeCanvasGroup, false);
         RefreshQuestList();
     }
@@ -85,10 +92,13 @@ public class QuestLogUI : MonoBehaviour
 
     public void OnCompleteQuestClicked()
     {
-        questManager.CompleteQuest(questSO);
+        QuestSO completedQuest = questSO;
+        questManager.CompleteQuest(completedQuest);
+        QuestEvents.OnQuestCompleted?.Invoke(completedQuest);
         RefreshQuestList();
         HandleQuestClicked(noAvailableQuestSO);
         SetCanvasState(completeCanvasGroup, false);
+        SetCanvasState(declineCanvasGroup, true);
     }
 
     private void SetCanvasState(CanvasGroup canvasGroup, bool isActive)

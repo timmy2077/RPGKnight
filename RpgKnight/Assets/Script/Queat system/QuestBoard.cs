@@ -9,10 +9,20 @@ public class QuestBoard : MonoBehaviour
     private bool playerInRange;
     private bool isQuestUIOpen = false;
 
+    // private void OnEnable()
+    // {
+    //     QuestEvents.OnQuestCompleted += OnQuestCompleted;
+    // }
+
+    // private void OnDisable()
+    // {
+    //     QuestEvents.OnQuestCompleted -= OnQuestCompleted;
+    // }
+
     private void Update()
 {
-    // if (playerInRange && Input.GetButtonDown("ToggleQuest"))
-    if (Input.GetButtonDown("ToggleQuest"))
+    if (playerInRange && Input.GetButtonDown("ToggleQuest"))
+    // if (Input.GetButtonDown("ToggleQuest"))
     {
         if (isQuestUIOpen)
         {
@@ -36,19 +46,27 @@ public class QuestBoard : MonoBehaviour
     }
 }
 
-// private void OnTriggerEnter2D(Collider2D collision)
+// public void OnQuestCompleted(QuestSO completedQuest)
 // {
-//     if (collision.gameObject.CompareTag("Player"))
+//     if (questToTurnIn == completedQuest)
 //     {
-//         playerInRange = true;
+//         questToTurnIn = null;
 //     }
 // }
 
-// private void OnTriggerExit2D(Collider2D collision)
-// {
-//     if (collision.gameObject.CompareTag("Player"))
-//     {
-//         playerInRange = false;
-//     } 
-// }
+private void OnTriggerEnter2D(Collider2D collision)
+{
+    if (collision.gameObject.CompareTag("Player"))
+    {
+        playerInRange = true;
+    }
+}
+
+private void OnTriggerExit2D(Collider2D collision)
+{
+    if (collision.gameObject.CompareTag("Player"))
+    {
+        playerInRange = false;
+    } 
+}
 }

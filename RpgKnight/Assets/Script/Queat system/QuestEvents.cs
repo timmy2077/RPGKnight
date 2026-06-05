@@ -10,4 +10,5 @@ public static class QuestEvents
    public static Action<QuestSO> OnQuestAccepted;
    public static Action OnQuestCloseRequested;
    public static Func<QuestSO, bool> IsQuestComplete;
+   public static Action<QuestSO> OnQuestCompleted;
 }
