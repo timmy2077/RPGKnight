@@ -16,7 +16,7 @@ MonoBehaviour:
   questDescription: Collect 1 pumproom.
   questLevel: 78
   objectives:
-  - description: Collect 1 Pumpkin
+  - description: Collect 1 Mushroom
     targetItem: {fileID: 11400000, guid: e814151b31bbfb140aef728a28a7ec90, type: 2}
     targetNPC: {fileID: 0}
     targetLocation: {fileID: 0}

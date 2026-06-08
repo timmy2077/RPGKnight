@@ -10,7 +10,10 @@ public class Arrow : MonoBehaviour
     public float speed=12f;
     public float rotateSpeed = 200f;
     private Transform target;
-    private bool hasFoundTarget = false;
+    private bool homingEnabled;
+    private float homingRange;
+    private Transform homingOrigin;
+    private string enemyTag = "Enemy";
     // public LayerMask enemyLayer;
     public int damage=1;
     public float knockbackForce;
@@ -18,72 +21,82 @@ public class Arrow : MonoBehaviour
     public float stunTime;
     private ObjectPool pool;           // 所属的对象池（可选，用于回收）
 
-    void Start()
+    public void Initialize(bool enableHoming, float detectionRange, Transform origin, string targetTag = "Enemy")
     {
-        // rb.velocity=direction*speed;
-        // RotateArrow();
-        // // 使用协程而不是Destroy，以便可以在返回对象池时停止
-        
-        FindClosestEnemy();
+        homingEnabled = enableHoming;
+        homingRange = detectionRange;
+        homingOrigin = origin;
+        enemyTag = string.IsNullOrEmpty(targetTag) ? "Enemy" : targetTag;
+        target = null;
+
+        if (homingEnabled)
+            FindClosestEnemy();
+    }
+
+    public void OnSpawn(ObjectPool ownerPool)
+    {
+        pool = ownerPool;
+        homingEnabled = false;
+        homingOrigin = null;
+        target = null;
+        enemyTag = "Enemy";
+
+        StopAllCoroutines();
         StartCoroutine(LifeTimer());
     }
 
-    // 当子弹从池中取出时调用，初始化状态
-public void OnSpawn(ObjectPool ownerPool)
-{
-    pool = ownerPool;
-    // 重置追踪状态
-    hasFoundTarget = false;
-    target = null;
-    // 重新查找敌人
-    FindClosestEnemy();
-    // 可以设置初始旋转（可选）
-    // transform.rotation = Quaternion.identity;
-}
-   void Update()
+    void Update()
     {
-        // 没找到敌人就直线飞
-        if (target == null)
+        if (homingEnabled)
         {
-            if (!hasFoundTarget)
-            {
+            if (target == null || !IsTargetInRange(target))
                 FindClosestEnemy();
+
+            if (target != null)
+            {
+                Vector2 dir = target.position - transform.position;
+                dir.Normalize();
+
+                float rotateAmount = Vector3.Cross(dir, transform.right).z;
+                transform.Rotate(0, 0, -rotateAmount * rotateSpeed * Time.deltaTime);
             }
-            transform.Translate(transform.right * speed * Time.deltaTime, Space.World);
-            return;
         }
-
-        // 追踪逻辑
-        Vector2 dir = target.position - transform.position;
-        dir.Normalize();
-
-        float rotateAmount = Vector3.Cross(dir, transform.right).z;
-        transform.Rotate(0, 0, -rotateAmount * rotateSpeed * Time.deltaTime);
 
         transform.Translate(transform.right * speed * Time.deltaTime, Space.World);
     }
 
-    /// <summary>
-    /// 寻找最近的敌人
-    /// </summary>
+    bool IsTargetInRange(Transform enemy)
+    {
+        if (homingOrigin == null || enemy == null)
+            return false;
+
+        return Vector2.Distance(homingOrigin.position, enemy.position) <= homingRange;
+    }
+
     void FindClosestEnemy()
     {
-        hasFoundTarget = true;
+        target = null;
 
-        // 找到所有标签为 Enemy 的物体
+        if (!homingEnabled || homingOrigin == null)
+            return;
+
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-
-        if (enemies.Length == 0) return;
+        if (enemies.Length == 0)
+            return;
 
         float closestDist = Mathf.Infinity;
         Transform closestEnemy = null;
 
         foreach (GameObject enemy in enemies)
         {
-            float dist = Vector2.Distance(transform.position, enemy.transform.position);
-            if (dist < closestDist)
+            float distFromPlayer = Vector2.Distance(homingOrigin.position, enemy.transform.position);
+            if (distFromPlayer > homingRange)
+                continue;
+
+            float distFromArrow = Vector2.Distance(transform.position, enemy.transform.position);
+            if (distFromArrow < closestDist)
             {
-                closestDist = dist;
+                closestDist = distFromArrow;
                 closestEnemy = enemy.transform;
             }
         }
@@ -95,7 +108,7 @@ public void OnSpawn(ObjectPool ownerPool)
     public void OnCollisionEnter2D(Collision2D collision)
     {
         // if ((enemyLayer.value & (1<<collision.gameObject.layer))>0)
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (!string.IsNullOrEmpty(enemyTag) && collision.gameObject.CompareTag(enemyTag))
         {
             Enemy_Health enemyHealth = collision.gameObject.GetComponent<Enemy_Health>();
             if (enemyHealth != null)

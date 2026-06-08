@@ -105,16 +105,17 @@ public class DialogueManager : MonoBehaviour
     else
     {
         if (currentDialogue.turnInQuestOnEnd != null &&
-    GameManager.instance.questManager.IsQuestComplete(currentDialogue.turnInQuestOnEnd))
+    GameManager.instance.questManager.IsQuestComplete(currentDialogue.turnInQuestOnEnd) &&
+    GameManager.instance.questManager.WasAcceptedFrom(currentDialogue.turnInQuestOnEnd, QuestAcceptSource.NPC))
     {
-    QuestEvents.OnQuestTurnInRequested?.Invoke(currentDialogue.turnInQuestOnEnd);
+    QuestEvents.OnQuestTurnInRequested?.Invoke(currentDialogue.turnInQuestOnEnd, QuestAcceptSource.NPC);
     EndDialogue();
     }
 
         else if (currentDialogue.offerQuestOnEnd != null)
         {
             EndDialogue();
-            QuestEvents.OnQuestOfferRequested?.Invoke(currentDialogue.offerQuestOnEnd);
+            QuestEvents.OnQuestOfferRequested?.Invoke(currentDialogue.offerQuestOnEnd, QuestAcceptSource.NPC);
         }
         else
         {

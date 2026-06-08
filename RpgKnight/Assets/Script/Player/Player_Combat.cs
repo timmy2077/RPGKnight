@@ -10,12 +10,27 @@ public class Player_Combat : MonoBehaviour
     public LayerMask enemyLayer;
     private float timer;
 
+    [Header("技能1")]
+    public GameObject skill1Prefab;
+    public float skill1Cooldown = 3f;
+    private float skill1Timer;
 
     private void Update()
     {
         if(timer > 0)
         {
             timer -= Time.deltaTime;
+        }
+
+        if (skill1Timer > 0)
+        {
+            skill1Timer -= Time.deltaTime;
+        }
+
+        if (Input.GetKeyDown(KeyCode.G) && skill1Timer <= 0)
+        {
+            animator.SetBool("IsSkill1", true);
+            skill1Timer = skill1Cooldown;
         }
     }
 
@@ -40,9 +55,26 @@ public class Player_Combat : MonoBehaviour
             }; 
     }
 
+    public void SpawnSkill1()
+    {
+        if (skill1Prefab != null && attackPoint != null)
+        {
+            GameObject projectile = Instantiate(skill1Prefab, attackPoint.position, Quaternion.identity);
+            PlayerSkill1Projectile skill = projectile.GetComponent<PlayerSkill1Projectile>();
+            if (skill != null)
+            {
+                skill.SetDirection(transform.localScale.x);
+            }
+        }
+    }
+
     public void FinishAttack()
     {
         animator.SetBool("IsAttacking", false);
     }
 
+    public void FinishSkill1()
+    {
+        animator.SetBool("IsSkill1", false);
+    }
 }

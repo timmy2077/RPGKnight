@@ -19,6 +19,7 @@ public class PlayerHealth : MonoBehaviour
        healthText.text ="HP: " + StatsManager.Instance.currentHealth + "/" + StatsManager.Instance.maxHealth;
         if (StatsManager.Instance.currentHealth <= 0)   
         {
+            healthText.text ="HP: " + "0" + "/" + StatsManager.Instance.maxHealth;
             StartCoroutine(HealthTextCooldown());
         }
     }

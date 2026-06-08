@@ -21,6 +21,7 @@ public class QuestObjective
     public ItemSO targetItem;
     public ActorSO targetNPC;
     public LocationSO targetLocation;
+    public EnemySO targetEnemy;
 
     public int requiredAmount;
 }

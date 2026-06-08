@@ -31,15 +31,17 @@ public class QuestBoard : MonoBehaviour
         }
         else
         {
-            bool canTurnIn = questToTurnIn != null && QuestEvents.IsQuestComplete?.Invoke(questToTurnIn) == true;
+            bool canTurnIn = questToTurnIn != null
+                && QuestEvents.IsQuestComplete?.Invoke(questToTurnIn) == true
+                && GameManager.instance.questManager.WasAcceptedFrom(questToTurnIn, QuestAcceptSource.QuestBoard);
             if(canTurnIn)
             {
-                QuestEvents.OnQuestTurnInRequested?.Invoke(questToTurnIn);
+                QuestEvents.OnQuestTurnInRequested?.Invoke(questToTurnIn, QuestAcceptSource.QuestBoard);
                 isQuestUIOpen = true;
             }
             else
             {
-                QuestEvents.OnQuestOfferRequested?.Invoke(questToOffer);
+                QuestEvents.OnQuestOfferRequested?.Invoke(questToOffer, QuestAcceptSource.QuestBoard);
                 isQuestUIOpen = true;
             }
         }

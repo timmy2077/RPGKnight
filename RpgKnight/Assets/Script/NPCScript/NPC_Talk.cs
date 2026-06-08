@@ -90,7 +90,7 @@ public class NPC_Talk : MonoBehaviour
     }
 }
 
-    private void OnQuestAccepted_RemoveOfferings(QuestSO acceptedQuest)
+    private void OnQuestAccepted_RemoveOfferings(QuestSO acceptedQuest, QuestAcceptSource source)
 {
     for (int i = conversations.Count - 1; i >= 0; i--)
     {

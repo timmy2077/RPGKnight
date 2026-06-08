@@ -22,7 +22,7 @@ MonoBehaviour:
     targetLocation: {fileID: 11400000, guid: 36ccceb7e4f4ee743b6818cf4a5678ba, type: 2}
     requiredAmount: 1
   - description: Collect 1 Pumpkin
-    targetItem: {fileID: 11400000, guid: e814151b31bbfb140aef728a28a7ec90, type: 2}
+    targetItem: {fileID: 11400000, guid: 500e9dea6ca60f4499f98c22a1b9d60a, type: 2}
     targetNPC: {fileID: 0}
     targetLocation: {fileID: 0}
     requiredAmount: 1
@@ -35,4 +35,3 @@ MonoBehaviour:
     quantity: 2
   - itemSO: {fileID: 11400000, guid: fe7f14fb2c562ae4fb04c60185759489, type: 2}
     quantity: 1
-  nextQuest: {fileID: 11400000, guid: 16476d07365c32a4ba485ef4bada175b, type: 2}

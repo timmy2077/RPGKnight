@@ -16,6 +16,7 @@ public class InventoryManager : MonoBehaviour
     public Transform player;
 
     public static event System.Action<int> OnEXperienceGained;
+    public static event Action OnInventoryChanged;
 
     private void Awake()
 {
@@ -75,6 +76,7 @@ public class InventoryManager : MonoBehaviour
         slot.UpdateUI();
         if(quantity <= 0)
         {
+            NotifyInventoryChanged();
             return;
         }
     }
@@ -88,6 +90,7 @@ public class InventoryManager : MonoBehaviour
                     slot.itemSO = itemSO;
                     slot.quantity = quantity;
                     slot.UpdateUI();
+                    NotifyInventoryChanged();
                     return;
                 }
             }
@@ -95,6 +98,8 @@ public class InventoryManager : MonoBehaviour
         {
             DropLoot(itemSO, quantity);
         }
+
+        NotifyInventoryChanged();
     }
 
     public void RemoveItem(ItemSO itemSO, int quantity)
@@ -123,6 +128,8 @@ public class InventoryManager : MonoBehaviour
             slot.UpdateUI();
         }
     }
+
+    NotifyInventoryChanged();
 }
 
     public void DropItem(Inventory slot)
@@ -133,6 +140,7 @@ public class InventoryManager : MonoBehaviour
             slot.itemSO = null;
             slot.quantity = 0;
             slot.UpdateUI();
+            NotifyInventoryChanged();
         }
     }
 
@@ -156,9 +164,8 @@ public class InventoryManager : MonoBehaviour
                 slot.itemSO = null;
             }
             slot.UpdateUI();
-
+            NotifyInventoryChanged();
         }
-        
     }
 
     public bool HasItem(ItemSO itemSO)
@@ -185,4 +192,9 @@ public class InventoryManager : MonoBehaviour
 
     return total;
 }
+
+    private void NotifyInventoryChanged()
+    {
+        OnInventoryChanged?.Invoke();
+    }
 }
