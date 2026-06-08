@@ -28,8 +28,10 @@ public class Player_Combat : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.G) && skill1Timer <= 0)
+        // if (Input.GetButtonDown("Skill1") && skill1Timer <= 0)
         {
-            animator.SetBool("IsSkill1", true);
+            Debug.Log("技能1");
+            animator.SetBool("IsSkill", true);
             skill1Timer = skill1Cooldown;
         }
     }
@@ -75,6 +77,6 @@ public class Player_Combat : MonoBehaviour
 
     public void FinishSkill1()
     {
-        animator.SetBool("IsSkill1", false);
+        animator.SetBool("IsSkill", false);
     }
 }
